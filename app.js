@@ -37,7 +37,6 @@ async function handlePageLoad() {
     // set totalPages from calculating based on count and page Size
     totalPages = Math.ceil(count / pageSize);
 
-
     display();
 }
 
@@ -54,7 +53,6 @@ function handlePaging(change, size) {
 
     const params = new URLSearchParams(window.location.search);
     // *** set page and pageSize params based on change and PageSize
-    // page = Math.max(1, page + change);
     if (Number(size) === pageSize) {
         page = Math.max(1, page + change);
     }

@@ -12,6 +12,7 @@ export default function createFilter(form, { handleFilter }) {
         const age = formData.get('age');
 
 // *** call handleFilter with an object that has the breed and age;
+// could also have written handleFilter( { breed: formData.set('breed'), age: formData.set('age') }) rather than const iding them above
         handleFilter(
             { breed, age }
         );

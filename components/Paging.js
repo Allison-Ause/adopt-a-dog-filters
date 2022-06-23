@@ -6,15 +6,18 @@ export default function createPaging(root, { handlePaging }) {
     const [prev, next] = root.querySelectorAll('button');
 
     prev.addEventListener('click', () => {
+        handlePaging(-1);
         // *** call handlePaging with the page change and page size
     });
 
     next.addEventListener('click', () => {
+        handlePaging(1);
         // *** call handlePaging with the page change and page size
     });
 
     selectSize.addEventListener('change', () => {
         // *** call handlePaging with the page change and page size
+        handlePaging(0);
     });
 
     return ({ page, pageSize, totalPages }) => {

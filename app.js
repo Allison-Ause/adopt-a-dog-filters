@@ -25,18 +25,17 @@ async function handlePageLoad() {
     // page (make sure a number, default to 1)
     page = Number(params.get('page')) || 1;
     // pageSize (make sure a number, default to 5)
-    page = Number(params.get('pageSize') || 5);
-
+    pageSize = Number(params.get('pageSize') || 5);
 
     // calculate start and end of range from page and pageSize
     const start = (page - 1) * pageSize;
     const end = (page * pageSize) - 1;
-    // const { data, count } = await getDogs(breed, age, { start, end });
-    // dogs = data;
 
-    const { data, count }
+    const { data, count } = await getDogs(breed, age, { start, end });
+    dogs = data;
+
     // set totalPages from calculating based on count and page Size
-
+    totalPages = Math.ceil(count / pageSize);
 
 
     display();
@@ -47,14 +46,26 @@ function handleFilter(filter) {
     // *** set breed, age, and page params based on filter
     params.set('breed', filter.breed);
     params.set('age', filter.age);
-
+    params.set('page', 1);
     window.location.search = params.toString();
 }
 
-function handlePaging(change, pageSize) {
+function handlePaging(change, size) {
+
     const params = new URLSearchParams(window.location.search);
     // *** set page and pageSize params based on change and PageSize
+    // page = Math.max(1, page + change);
+    if (Number(size) === pageSize) {
+        page = Math.max(1, page + change);
+    }
+    else {
+        page = 1;
+    }
     // make sure page not less than 1
+    params.set('page', page);
+    params.set('pageSize', size);
+
+
     window.location.search = params.toString();
 }
 

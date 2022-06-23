@@ -7,7 +7,7 @@ export async function getDogs(breed, age, { start, end }) {
     let query = client
         .from('dogs')
         // *** set option to return an exact count
-        .select('id, name, breed',
+        .select('id, name, breed, age',
             { count: 'exact' }
         );
 
@@ -17,9 +17,10 @@ export async function getDogs(breed, age, { start, end }) {
     }
 
     if (age) {
-        query = query.gte('age', `${age}`);
+        query = query.gte('age', Number(age));
     }
-    // *** add paging by setting a range modifier
+    // *** add paging by setting a range modifier (this is where we add start & end)
+    query = query.range(start, end);
 
     const response = await query;
 

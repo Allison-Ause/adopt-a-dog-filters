@@ -6,20 +6,25 @@ export default function createPaging(root, { handlePaging }) {
     const [prev, next] = root.querySelectorAll('button');
 
     prev.addEventListener('click', () => {
+        handlePaging(-1, selectSize.value);
         // *** call handlePaging with the page change and page size
     });
 
     next.addEventListener('click', () => {
+        handlePaging(1, selectSize.value);
         // *** call handlePaging with the page change and page size
     });
 
     selectSize.addEventListener('change', () => {
         // *** call handlePaging with the page change and page size
+        handlePaging(0, selectSize.value);
     });
 
     return ({ page, pageSize, totalPages }) => {
         selectSize.value = pageSize;
         // *** disable the prev or next button if on page 1 or totalPages
+        prev.disabled = page === 1;
+        next.disabled = page >= totalPages;
 
         pageInfo.textContent = `Page ${page} of ${totalPages}`;
     };

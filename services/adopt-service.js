@@ -2,15 +2,25 @@ const SUPABASE_URL = 'https://gxwgjhfyrlwiqakdeamc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzNjQxMTMxMiwiZXhwIjoxOTUxOTg3MzEyfQ.PHekiwfLxT73qQsLklp0QFEfNx9NlmkssJFDnlvNIcA';
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+
 export async function getDogs(breed, age, { start, end }) {
     let query = client
         .from('dogs')
         // *** set option to return an exact count
-        .select('id, name, breed');
+        .select('id, name, breed, age',
+            { count: 'exact' }
+        );
 
     // *** add breed and age filters if they exist
+    if (breed) {
+        query = query.ilike('breed', `%${breed}%`);
+    }
 
-    // *** add paging by setting a range modifier
+    if (age) {
+        query = query.gte('age', Number(age));
+    }
+    // *** add paging by setting a range modifier (this is where we add start & end)
+    query = query.range(start, end);
 
     const response = await query;
 
